@@ -1,0 +1,1 @@
+*.tfstate\n*.log\n.env
