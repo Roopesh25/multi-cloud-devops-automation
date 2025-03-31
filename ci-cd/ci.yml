@@ -1,0 +1,33 @@
+stages:
+  - build
+  - push
+  - deploy
+
+variables:
+  AWS_REGION: "us-east-1"
+  ACR_NAME: "multicloudacr"
+
+build:
+  stage: build
+  script:
+    - docker build -t java-backend ./docker
+    - docker build -t python-service ./docker
+
+push:
+  stage: push
+  script:
+    # AWS ECR
+    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+    - docker tag java-backend:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/java-backend:latest
+    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/java-backend:latest
+
+    # Azure ACR
+    - az acr login --name $ACR_NAME
+    - docker tag python-service:latest $ACR_NAME.azurecr.io/python-service:latest
+    - docker push $ACR_NAME.azurecr.io/python-service:latest
+
+deploy:
+  stage: deploy
+  script:
+    - kubectl apply -f ./kubernetes/java-backend/
+    - kubectl apply -f ./kubernetes/python-service/

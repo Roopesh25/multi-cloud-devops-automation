@@ -30,3 +30,6 @@ if [[ $confirm == "y" || $confirm == "Y" ]]; then
 else
   echo "❌ Apply cancelled."
 fi
+
+# chmod +x deploy.sh
+# ./deploy.sh ./terraform/aws terraform.tfvars
