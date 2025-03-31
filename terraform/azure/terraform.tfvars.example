@@ -1,0 +1,18 @@
+# ============================
+# terraform.tfvars.example for Azure Deployment
+# ============================
+
+location = "East US"
+resource_group_name = "multi-cloud-rg"
+vnet_address_space = ["10.1.0.0/16"]
+aks_subnet_prefix   = ["10.1.1.0/24"]
+aks_node_count      = 2
+aks_node_size       = "Standard_DS2_v2"
+acr_name            = "multicloudacr"
+log_analytics_name  = "aks-log-analytics"
+
+# Example of additional configuration:
+# default_tags = {
+#   Environment = "dev"
+#   Project     = "multi-cloud"
+# }

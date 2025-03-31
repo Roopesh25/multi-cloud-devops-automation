@@ -1,1 +1,2 @@
 *.tfstate\n*.log\n.env
+terraform.tfvars
